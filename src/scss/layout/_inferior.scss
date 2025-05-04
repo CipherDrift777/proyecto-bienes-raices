@@ -1,0 +1,27 @@
+@include tablet {
+    .seccion-inferior {
+        display: flex;
+        grid-template-columns: 2fr;
+
+    }
+}
+
+.entrada-blog {
+    margin-bottom: 2rem;
+
+    @include tablet {
+        display: grid;
+        grid-template-columns: 1fr 2fr;
+        column-gap: 2rem;
+    }
+
+    &:last-of-type  {
+        margin-bottom: 0;
+    }
+}
+
+.texto-entrada {
+    a{
+        color: $negro;
+    }
+}

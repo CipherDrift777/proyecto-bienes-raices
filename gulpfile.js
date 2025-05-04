@@ -1,3 +1,4 @@
+const plumber = require('gulp-plumber');
 const { src, dest, watch, series, parallel } = require('gulp');
 const sass = require('gulp-sass')(require('sass'));
 const autoprefixer = require('autoprefixer');
@@ -21,10 +22,18 @@ const paths = {
 
 function css() {
     return src(paths.scss)
+        .pipe(plumber({
+            errorHandler: function(err) {
+                notify.onError({
+                    title: "Error en CSS",
+                    message: "<%= error.message %>"
+                })(err);
+                this.emit('end'); 
+            }
+        }))
         .pipe(sourcemaps.init())
         .pipe(sass())
         .pipe(postcss([autoprefixer(), cssnano()]))
-        // .pipe(postcss([autoprefixer()]))
         .pipe(sourcemaps.write('.'))
         .pipe(dest('build/css'));
 }
@@ -60,6 +69,8 @@ function watchArchivos() {
     watch(paths.imagenes, imagenes);
     watch(paths.imagenes, versionWebp);
 }
+
+
 
 exports.css = css;
 exports.watchArchivos = watchArchivos;
